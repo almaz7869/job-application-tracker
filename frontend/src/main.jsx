@@ -1,0 +1,1 @@
+import React from 'react';import{createRoot}from'react-dom/client';import App from './App.jsx';import AuthBar from './AuthBar.jsx';import './style.css';createRoot(document.getElementById('root')).render(<React.StrictMode><AuthBar/><App/></React.StrictMode>);
