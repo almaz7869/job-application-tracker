@@ -1,4 +1,4 @@
-const BASE=import.meta.env.VITE_API_BASE_URL||'http://localhost:8080';
+const BASE=(import.meta.env.VITE_API_BASE_URL||window.location.origin).replace(/\/$/,'');
 export async function api(path,options={}){
   const headers={...(options.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(options.headers||{})};
   const token=localStorage.getItem('accessToken'); if(token) headers.Authorization=`Bearer ${token}`;
