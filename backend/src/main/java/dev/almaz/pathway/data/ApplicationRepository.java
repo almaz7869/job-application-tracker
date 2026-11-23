@@ -1,0 +1,1 @@
+package dev.almaz.pathway.data;import dev.almaz.pathway.domain.Application;import org.springframework.data.jpa.repository.JpaRepository;import java.util.*;public interface ApplicationRepository extends JpaRepository<Application,Long>{List<Application> findByOwnerOrderByIdDesc(String owner);}
