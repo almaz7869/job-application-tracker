@@ -1,7 +1,7 @@
-FROM maven:3.9-eclipse-temurin-17 AS build
+﻿FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /src
-COPY pom.xml .
-COPY src src
+COPY job-tracker-backend-source.zip /tmp/backend-source.zip
+RUN jar xf /tmp/backend-source.zip
 RUN mvn -B -DskipTests package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
