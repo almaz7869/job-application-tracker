@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment: { MYSQL_DATABASE: job_application_tracker, MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-localdev} }
+    ports: ["3306:3306"]
+    volumes: ["mysql-data:/var/lib/mysql"]
+    healthcheck: { test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$${MYSQL_ROOT_PASSWORD}"], interval: 5s, timeout: 5s, retries: 20 }
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: jdbc:mysql://mysql:3306/job_application_tracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DATABASE_USER: root
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-localdev}
+      REDIS_HOST: redis
+      AI_API_KEY: ${AI_API_KEY:-}
+      JWT_SECRET: ${JWT_SECRET:-local-development-only-change-this-secret-before-deploying}
+      APP_USERNAME: ${APP_USERNAME:-demo}
+      APP_PASSWORD: ${APP_PASSWORD:-localdev}
+      CORS_ORIGIN: http://localhost:5173
+    depends_on: { mysql: { condition: service_healthy }, redis: { condition: service_started } }
+    ports: ["8080:8080"]
+  frontend:
+    build: ./frontend
+    depends_on: [api]
+    ports: ["5173:80"]
+volumes: { mysql-data: {} }
