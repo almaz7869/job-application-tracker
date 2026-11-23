@@ -16,8 +16,8 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-          cache: maven
       - name: Extract backend source
         run: unzip -oq backend/job-tracker-backend-source.zip -d backend
       - run: mvn -B -DskipTests package
         working-directory: backend
+
